@@ -349,10 +349,10 @@ fun StatisticsScreen(
                     SelectLabelDialog(
                         title = stringResource(Res.string.labels_select_label),
                         labels =
-                            uiState.labels.filter {
-                                !it.isDefault() &&
-                                    (it.name in uiState.activeLabelNames || it.name == uiState.sessionToEdit?.label)
-                            },
+                        uiState.labels.filter {
+                            !it.isDefault() &&
+                                (it.name in uiState.activeLabelNames || it.name == uiState.sessionToEdit?.label)
+                        },
                         initialSelectedLabels = listOf(uiState.newSession.label),
                         onDismiss = { showSelectLabelDialog = false },
                         singleSelection = true,
