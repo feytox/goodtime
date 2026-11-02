@@ -36,10 +36,10 @@ interface SessionDao {
         """
         UPDATE localSession
         SET timestamp = :newTimestamp, duration = :newDuration, interruptions = :newInterruptions, labelName = :newLabel, notes = :newNotes, isWork = :newIsWork,
-        isArchived = COALESCE(
-            (SELECT l.isArchived FROM localLabel l WHERE l.name = :newLabel ORDER BY l.isArchived = localSession.isArchived DESC LIMIT 1),
+        isArchived = CASE WHEN labelName = :newLabel THEN isArchived ELSE COALESCE(
+            (SELECT l.isArchived FROM localLabel l WHERE l.name = :newLabel ORDER BY l.isArchived LIMIT 1),
             isArchived
-        )
+        ) END
         WHERE id = :id
     """,
     )
@@ -56,10 +56,10 @@ interface SessionDao {
     @Query(
         """
         UPDATE localSession SET labelName = :newLabel,
-        isArchived = COALESCE(
-            (SELECT l.isArchived FROM localLabel l WHERE l.name = :newLabel ORDER BY l.isArchived = localSession.isArchived DESC LIMIT 1),
+        isArchived = CASE WHEN labelName = :newLabel THEN isArchived ELSE COALESCE(
+            (SELECT l.isArchived FROM localLabel l WHERE l.name = :newLabel ORDER BY l.isArchived LIMIT 1),
             isArchived
-        )
+        ) END
         WHERE id IN (:ids)
         """,
     )
